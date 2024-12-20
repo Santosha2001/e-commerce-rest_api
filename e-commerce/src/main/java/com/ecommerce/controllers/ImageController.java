@@ -23,13 +23,13 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
-@RequestMapping("${api.prefix}/images")
+@RequestMapping("${api.prefix}/image")
 public class ImageController {
 
     @Autowired
     private ImageService imageService;
 
-    @PostMapping("/upload")
+    @PostMapping("/upload-image")
     public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> files, @RequestParam Long productId) {
 
         try {
@@ -41,7 +41,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/image/download/{imageId}")
+    @GetMapping("/download-image/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) {
 
         try {
@@ -56,8 +56,8 @@ public class ImageController {
         }
     }
 
-    @PutMapping("/image/{imageId}/update")
-    public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestParam MultipartFile file) {
+    @PutMapping("/update-image-by-id")
+    public ResponseEntity<ApiResponse> updateImage(@RequestParam Long imageId, @RequestParam MultipartFile file) {
         try {
             Image image = imageService.getImageById(imageId);
             if (image == null) {
@@ -71,8 +71,8 @@ public class ImageController {
                 .body(new ApiResponse("Update failed", INTERNAL_SERVER_ERROR));
     }
 
-    @DeleteMapping("/image/{imageId}/delete")
-    public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId) {
+    @DeleteMapping("/delete-image-by-id")
+    public ResponseEntity<ApiResponse> deleteImage(@RequestParam Long imageId) {
         try {
             Image image = imageService.getImageById(imageId);
             if (image == null) {

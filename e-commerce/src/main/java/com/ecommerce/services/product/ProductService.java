@@ -1,5 +1,6 @@
 package com.ecommerce.services.product;
 
+import com.ecommerce.dto.ProductDto;
 import com.ecommerce.models.Category;
 import com.ecommerce.models.Product;
 import com.ecommerce.request.AddProductRequest;
@@ -35,4 +36,7 @@ public interface ProductService {
 
     Long countProductsByBrandsAndName(String brand, String name);
 
+    ProductDto convertToDto(Product product);
+
+    List<ProductDto> convertToListOfDtos(List<Product> products);
 }

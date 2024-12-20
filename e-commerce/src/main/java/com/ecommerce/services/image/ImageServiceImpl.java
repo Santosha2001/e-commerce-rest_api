@@ -38,7 +38,7 @@ public class ImageServiceImpl implements ImageService {
                 image.setImage(new SerialBlob(file.getBytes()));
                 image.setProduct(productById);
 
-                String buildDownloadUrl = "/api/v1/images/download/";
+                String buildDownloadUrl = "/e-commerce/image/download-image/";
                 String downloadUrl = buildDownloadUrl + image.getId();
                 image.setDownloadUrl(downloadUrl);
 

@@ -1,12 +1,17 @@
 package com.ecommerce.services.product;
 
+import com.ecommerce.dto.ImageDto;
+import com.ecommerce.dto.ProductDto;
 import com.ecommerce.exceptions.ProductNotFoundException;
 import com.ecommerce.models.Category;
+import com.ecommerce.models.Image;
 import com.ecommerce.models.Product;
 import com.ecommerce.repositories.CategoryRepository;
+import com.ecommerce.repositories.ImageRepository;
 import com.ecommerce.repositories.ProductRepository;
 import com.ecommerce.request.AddProductRequest;
 import com.ecommerce.request.ProductUpdateRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +26,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public Product createProduct(AddProductRequest productRequest) {
@@ -123,5 +134,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Long countProductsByBrandsAndName(String brand, String name) {
         return null;
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(images, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
+    }
+
+    @Override
+    public List<ProductDto> convertToListOfDtos(List<Product> products) {
+        return products.stream().map(this::convertToDto).toList();
     }
 }
